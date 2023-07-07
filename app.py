@@ -7,8 +7,6 @@ app.config['SECRET_KEY'] = "oh-so-secret"
 
 debug = DebugToolbarExtension(app)
 
-responses = []
-
 @app.route("/")
 def home_page():
     sat_survey = satisfaction_survey
@@ -16,7 +14,7 @@ def home_page():
 
 @app.route("/start", methods=["POST"])
 def survey_start():
-
+    session[all_responses] = []
     return redirect("/questions/0")
 
 @app.route("/questions/<int:qid>")
@@ -40,7 +38,10 @@ def get_question(qid):
 @app.route("/answer", methods=["POST"])
 def post_answer():
     answer = request.form["answer"]
+    
+    responses = session[all_responses]
     responses.append(answer)
+    session[all_responses] = responses
     
     if (len(responses) == len(satisfaction_survey.questions)):
         print(responses)
