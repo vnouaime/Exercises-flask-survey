@@ -30,7 +30,7 @@ def get_question(qid):
         return redirect("/complete")
 
     if (len(responses) != qid):
-    
+        flash(f"Invalid question id: {qid}.")
         return redirect(f"/questions/{len(responses)}")
 
     question = satisfaction_survey.questions[qid]
